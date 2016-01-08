@@ -25,6 +25,5 @@ EXPOSE 5000
 ENV BUILD_VERSION 1
 
 ADD runserver.sh /runserver.sh
-ADD manage.sh /manage.sh
 
 ENTRYPOINT ["bash", "/runserver.sh"]
