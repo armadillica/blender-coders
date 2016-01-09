@@ -1,20 +1,25 @@
 import datetime
 from flask import Flask
 from flask import jsonify
+from flask import render_template
 
 app = Flask(__name__)
 
 @app.route("/")
+def index():
+    return render_template('index.html')
+
+@app.route("/meeting-times.json")
 def meeting_times():
-    DISPLAY_NUM = 4
+    DISPLAY_NUM = 1
     meeting_times = []
 
     # Meeting generation script provided by Campbell Barton
     def generate_meetings(
             t_start,
-            days=(9, 18, 27),
+            days=(9, 16, 23),
             hrs=(18, 9, 23),  # hours GMT
-            cities=("Los Angeles", "Amsterdam", "Sydney"),
+            cities=("America/Los_Angeles", "Europe/Amsterdam", "Australia/Sydney"),
             ):
 
         year = t_start.year
@@ -45,5 +50,5 @@ def meeting_times():
     return jsonify(meeting_times=meeting_times)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True)
 
