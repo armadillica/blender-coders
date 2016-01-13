@@ -1,0 +1,8 @@
+.DS_Store
+*.pyc
+*.map
+
+node_modules
+
+blender-coders/templates
+blender-coders/static/assets/css
