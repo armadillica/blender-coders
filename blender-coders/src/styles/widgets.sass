@@ -1,8 +1,67 @@
 body
+	padding: 0
+	margin: 0
 	background-color: white
 	font:
-		family: 'Arial', 'Helvetica', 'sans-serif'
 		size: 1em
+		family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
 
-table
-	color: green
+
+#meetings_widget-container
+	width: 200px
+	position: relative
+	padding: 0 10px
+
+	#meetings_widget-next
+		color: #444
+		border-top: thin solid #ddd
+		padding: 15px 0 20px 0
+		margin: 10px 0 0 0
+		clear: both
+		display: flex
+		justify-content: space-around
+		position: relative
+
+		&:before
+			content: 'NEXT DEVELOPERS MEETING'
+			color: #888
+			font-size: .6em
+			background-color: white
+			padding: 0 10px
+			white-space: nowrap
+			position: absolute
+			top: -5px
+			left: 50%
+			transform: translateX(-50%)
+
+		.next-time
+			font-size: 2em
+
+		.next-details
+			font-size: 1.1em
+			.next-day
+				font-size: .8em
+
+
+	#meetings_widget-upcoming
+		border-top: thin solid #ddd
+		color: #666
+		color: #888
+		font-size: .9em
+		text-align: center
+		position: relative
+		padding-top: 5px
+
+		&:before
+			content: 'UPCOMING'
+			font-size: .6em
+			background-color: white
+			padding: 0 10px
+			white-space: nowrap
+			position: absolute
+			top: -5px
+			left: 50%
+			transform: translateX(-50%)
+
+		.upcoming-item
+			padding: 6px 0 0 0

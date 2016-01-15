@@ -48,9 +48,9 @@ gulp.task('templates', function() {
 gulp.task('watch',function() {
     livereload.listen();
 
-    gulp.watch('blender-coders/src/styles/**/*.sass',['styles', 'inlinecss']);
+    gulp.watch('blender-coders/src/styles/**/*.sass',['styles']);
     gulp.watch('blender-coders/src/templates/**/*.jade',['templates']);
-    gulp.watch('blender-coders/templates/widgets/*.html',['inlinecss']);
+    // gulp.watch('blender-coders/templates/widgets/*.html',['inlinecss']);
 });
 
-gulp.task('default', ['styles', 'templates', 'inlinecss']);
+gulp.task('default', ['styles', 'templates']);

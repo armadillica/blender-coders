@@ -7,12 +7,9 @@ html
     script(src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.0/moment.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.0/moment-timezone-with-data-2010-2020.min.js')
   body
-    table
-      thead
-        tr
-          th Your Local time
-          th Reference Time
-      tbody#timetable
+    #meetings_widget-container
+      #meetings_widget-next
+      #meetings_widget-upcoming
     script(type='text/javascript').
 
       var xmlhttp = new XMLHttpRequest();
@@ -29,7 +26,8 @@ html
       xmlhttp.send();
 
       function addScheduleRows(arr) {
-        var out = "";
+        var next = "";
+        var upcoming = "";
         var i;
 
         for(i = 0; i < arr.length; i++) {
@@ -37,12 +35,26 @@ html
           var local = moment.tz.guess();
           // Convert GMT timezone to local timezone
           var a = moment.tz(arr[i].gmt_time, local);
-          // Add row to the timetable
-          out += '<tr>' +
-          '<td>' + a.format('ddd DD, hh:mm A') + '</td>' +
-          '<td>' + '10:00 AM ' + arr[i].city + '</td>' +
-          '</tr>';
+
+          if (i == 0){
+            // Next Meeting
+            next += '' +
+            '<div class="next-time"><abbr title="10:00 AM in ' + arr[i].city + '">' + a.format('HH:mm') + '</abbr></div>' +
+            '<div class="next-details">' +
+              '<div class="next-date">' + a.format('Do MMM') + '</abbr></div>' +
+              '<div class="next-day">' + a.format('dddd') + '</abbr></div>' +
+            '</div>';
+
+            document.getElementById("meetings_widget-next").innerHTML = next;
+          }
+
+          if (i > 0) {
+            // Upcoming Meetings
+            upcoming += '<div class="upcoming-item">' +
+            '<abbr title="10:00 AM in ' + arr[i].city + '">' + a.format('HH:mm dddd, Do MMM ') + '</abbr>' +
+            '</div>';
+            document.getElementById("meetings_widget-upcoming").innerHTML = upcoming;
+          };
         }
 
-        document.getElementById("timetable").innerHTML = out;
       }
