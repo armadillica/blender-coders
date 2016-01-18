@@ -7,5 +7,17 @@ html
     script(src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.0/moment.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.0/moment-timezone-with-data-2010-2020.min.js')
   body
-    h1 Blender Coders
-    iframe(src="/meeting/widget")
+    #page-container
+      .meeting-widget
+        h2 Blender Developers Meeting Time
+        iframe.meeting-widget__iframe(
+          src="/meeting/widget",
+          width="200",
+          height="150",
+          scrolling="no",
+          frameborder="no")
+
+        span.meeting-widget__embed-text embed this widget on your website:
+        input.meeting-widget__embed-input(
+          onClick="this.select();",
+          value='<iframe width="200" height="150" scrolling="no" frameborder="no" src="{{url_for(\'meeting_widget\')}}" ></iframe>')
