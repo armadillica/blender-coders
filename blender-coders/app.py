@@ -5,6 +5,11 @@ from flask import render_template
 
 app = Flask(__name__)
 
+app.config.update(dict(
+    PREFERRED_URL_SCHEME='https',
+    DEBUG=False
+))
+
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -56,5 +61,5 @@ def meeting_times():
     return jsonify(meeting_times=meeting_times)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0')
 
