@@ -35,11 +35,18 @@ html
           var local = moment.tz.guess();
           // Convert GMT timezone to local timezone
           var a = moment.tz(arr[i].gmt_time, local);
+          // Get continent to format date properly (AM/PM vs 24h)
+          var continent = local.split('/')[0];
+          // Define hour format to be used in all a.format() calls
+          var hour_format = 'HH:mm';
+          if (continent === 'America') {
+            hour_format = 'h A';
+          }
 
           if (i == 0){
             // Next Meeting
             next += '' +
-            '<div class="next-time"><abbr title="10:00 AM in ' + arr[i].city + '">' + a.format('HH:mm') + '</abbr></div>' +
+            '<div class="next-time"><abbr title="10:00 AM in ' + arr[i].city + '">' + a.format(hour_format) + '</abbr></div>' +
             '<div class="next-details">' +
               '<div class="next-date">' + a.format('Do MMM') + '</abbr></div>' +
               '<div class="next-day">' + a.format('dddd') + '</abbr></div>' +
@@ -51,7 +58,7 @@ html
           if (i > 0) {
             // Upcoming Meetings
             upcoming += '<div class="upcoming-item">' +
-            '<abbr title="10:00 AM in ' + arr[i].city + '">' + a.format('HH:mm dddd, Do MMM ') + '</abbr>' +
+            '<abbr title="10:00 AM in ' + arr[i].city + '">' +  a.format(hour_format +' dddd, Do MMM ') + '</abbr>' +
             '</div>';
             document.getElementById("meetings_widget-upcoming").innerHTML = upcoming;
           };
