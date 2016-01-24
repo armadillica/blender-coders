@@ -21,17 +21,19 @@ def meeting_times():
     # Meeting generation script provided by Campbell Barton
     def generate_meetings(
             t_start,
-            days=(9, 16, 23),
+            days=(9, 18, 27),
             hrs=(18, 9, 23),  # hours GMT
             cities=("America/Los_Angeles", "Europe/Amsterdam", "Australia/Sydney"),
             ):
 
         year = t_start.year
         while True:
-            t_start = datetime.datetime(year=year, month=1, day=1)
+            t_start = datetime.datetime(year=year, month=t_start.month,
+                day=t_start.day)
             for month in range(1, 13):
                 for day, hr, city in zip(days, hrs, cities):
-                    t_test = datetime.datetime(year=t_start.year, month=month, day=day, hour=hr)
+                    t_test = datetime.datetime(year=t_start.year, month=month,
+                        day=day, hour=hr)
                     if t_test >= t_start:
                         yield t_test, city
             year += 1
