@@ -20,4 +20,4 @@ html
         span.meeting-widget__embed-text embed this widget on your website:
         input.meeting-widget__embed-input(
           onClick="this.select();",
-          value='<iframe width="200" height="150" scrolling="no" frameborder="no" src="{{url_for(\'meeting_widget\')}}" ></iframe>')
+          value='<iframe width="200" height="150" scrolling="no" frameborder="no" src="{{url_for(\'meeting_widget\', _external=True)}}" ></iframe>')
