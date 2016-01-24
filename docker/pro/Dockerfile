@@ -1,4 +1,5 @@
 FROM ubuntu:14.04
+
 MAINTAINER Francesco Siddi <francesco@blender.org>
 
 RUN apt-get update && apt-get install -y \
@@ -9,6 +10,9 @@ nano \
 software-properties-common \
 apache2-mpm-event \
 libapache2-mod-wsgi
+
+# Enable apache mods.
+RUN a2enmod rewrite
 
 RUN mkdir -p /data/git/blender-coders
 
@@ -31,6 +35,7 @@ RUN . /data/venv/bin/activate && pip install -r /requirements.txt \
 && rm /requirements.txt
 
 VOLUME /data/git/blender-coders
+VOLUME /data/git/letsencrypt
 
 ENV IS_DOCKER True
 
