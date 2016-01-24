@@ -47,7 +47,7 @@ def meeting_times():
         # print("%04d-%02d-%02d, %02d GMT, (days remaining: %02d), 10am %s local time" %
         #       (t.year, t.month, t.day, t.hour, max(0, (t - t_start).days), city))
         meeting_times.append(dict(
-            gmt_time=t,
+            gmt_time=t.isoformat() + 'Z',
             days_remaining=max(0, (t - t_start).days),
             city=city))
         if i > DISPLAY_NUM:
