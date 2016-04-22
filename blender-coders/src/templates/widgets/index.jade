@@ -37,6 +37,8 @@ html
           var a = moment.tz(arr[i].local_time, arr[i].city);
           // Convert timezone to current local timezone
           a = a.clone().tz(local);
+          // Get the UTC version of the local time
+          var a_utc = moment.utc(a);
           // Get continent to format date properly (AM/PM vs 24h)
           var continent = local.split('/')[0];
           // Define hour format to be used in all a.format() calls
@@ -44,11 +46,11 @@ html
           if (continent === 'America') {
             hour_format = 'h A';
           }
-
+          
           if (i == 0){
             // Next Meeting
             next += '' +
-            '<div class="next-time"><abbr title="10:00 AM in ' + arr[i].city + '">' + a.format(hour_format) + '</abbr></div>' +
+            '<div class="next-time"><abbr title="10:00 AM in ' + arr[i].city + ' (' + a_utc.format(hour_format) + ' UTC)">' + a.format(hour_format) + '</abbr></div>' +
             '<div class="next-details">' +
               '<div class="next-date">' + a.format('Do MMM') + '</abbr></div>' +
               '<div class="next-day">' + a.format('dddd') + '</abbr></div>' +
@@ -60,7 +62,7 @@ html
           if (i > 0) {
             // Upcoming Meetings
             upcoming += '<div class="upcoming-item">' +
-            '<abbr title="10:00 AM in ' + arr[i].city + '">' +  a.format(hour_format +' dddd, Do MMM ') + '</abbr>' +
+            '<abbr title="10:00 AM in ' + arr[i].city + ' (' + a_utc.format(hour_format) + ' UTC)">' +  a.format(hour_format +' dddd, Do MMM ') + '</abbr>' +
             '</div>';
             document.getElementById("meetings_widget-upcoming").innerHTML = upcoming;
           };

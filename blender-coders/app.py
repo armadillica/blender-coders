@@ -10,13 +10,16 @@ app.config.update(dict(
     DEBUG=False
 ))
 
+
 @app.route("/")
 def index():
     return render_template('index.html')
 
+
 @app.route("/meeting/widget")
 def meeting_widget():
     return render_template('widgets/index.html')
+
 
 @app.route("/meeting-times.json")
 def meeting_times():
