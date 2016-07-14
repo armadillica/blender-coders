@@ -23,44 +23,45 @@ def meeting_widget():
 
 @app.route("/meeting-times.json")
 def meeting_times():
-    DISPLAY_NUM = 1
     meeting_times = []
 
-    # Meeting generation script originally provided by Campbell Barton
-    def generate_meetings(
-            t_start,
-            days=(9, 18, 27),
-            hrs=(10, 10, 10),  # hours GMT
-            cities=("America/Los_Angeles", "Europe/Amsterdam", "Australia/Sydney"),
-            ):
-        year = t_start.year
-        while True:
-            for month in range(t_start.month, 13):
-                for day, hr, city in zip(days, hrs, cities):
-                    t_test = datetime.datetime(year=t_start.year, month=month,
-                        day=day, hour=hr)
-                    if t_test >= t_start:
-                        yield t_test, city
-            t_start = datetime.datetime(year=t_start.year + 1, month=1, day=1)
+    def get_sunday_and_days_remaining():
+        days_remaining = 0
+        d = datetime.date.today()
+        while d.weekday() != 6:
+            days_remaining += 1
+            d += datetime.timedelta(1)
+        return {
+            'city': 'Europe/Amsterdam',
+            'days_remaining': days_remaining,
+            'local_time': d}
 
-    # one day less to account for timezone of system
-    t = datetime.datetime.now() - datetime.timedelta(days=1)
-    t_start = datetime.datetime(year=t.year, month=t.month, day=t.day)
 
-    for i, (t_local, city) in enumerate(generate_meetings(t_start)):
-        meeting_times.append(dict(
-            local_time="%04d-%02d-%02dT10:00:00" % (t_local.year, t_local.month, t_local.day),
-            days_remaining=max(0, (t_local - t_start).days),
-            city=city))
-        # print("%04d-%02d-%02d, %02d%s %s local time, (days remaining: %02d), (%04d-%02d-%02d, %02d:%02d UTC)" %
-        #     (t_local.year, t_local.month, t_local.day, t_local.hour, t_local.strftime("%p"), city,
-        #     max(0, (t_local - t_start).days),
-        #     t_utc.year, t_utc.month, t_utc.day, t_utc.hour, t_utc.minute,
-        #     ))
-        if i > DISPLAY_NUM:
-            break
+    def get_day_in_following_weeks(d, weeks=2):
+        days_remaining = d['days_remaining']
+        sunday = d['local_time']
+        for i in range(weeks):
+            days_remaining += 7
+            sunday += datetime.timedelta(7)
+            meeting_times.append({
+                'city': d['city'],
+                'days_remaining': days_remaining,
+                'local_time': sunday
+                })
 
+
+    def format_dates(meeting_times):
+        for m in meeting_times:
+            m['local_time'] = "%04d-%02d-%02dT16:00:00" % (
+                m['local_time'].year, m['local_time'].month, m['local_time'].day)
+
+
+    first_sunday = get_sunday_and_days_remaining()
+    meeting_times.append(first_sunday)
+    get_day_in_following_weeks(first_sunday)
+    format_dates(meeting_times)
     return jsonify(meeting_times=meeting_times)
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
