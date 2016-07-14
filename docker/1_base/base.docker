@@ -1,0 +1,15 @@
+FROM ubuntu:14.04
+MAINTAINER Francesco Siddi <francesco@blender.org>
+
+RUN apt-get update && apt-get install -qyy \
+    -o APT::Install-Recommends=false -o APT::Install-Suggests=false \
+    python-virtualenv pypy libffi6 openssl
+
+RUN mkdir -p /data/git/blender-network \
+&& mkdir -p /data/storage \
+&& mkdir -p /data/config \
+&& mkdir -p /data/venv \
+&& mkdir -p /data/wheelhouse
+
+RUN virtualenv /data/venv
+RUN . /data/venv/bin/activate && pip install -U pip && pip install wheel

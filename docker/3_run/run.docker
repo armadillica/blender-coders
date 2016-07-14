@@ -1,0 +1,44 @@
+FROM blender_coders_base
+MAINTAINER Francesco Siddi <francesco@blender.org>
+
+RUN apt-get update && apt-get install -qyy \
+-o APT::Install-Recommends=false -o APT::Install-Suggests=false \
+apache2-mpm-event \
+libapache2-mod-wsgi \
+libapache2-mod-xsendfile \
+libjpeg8 \
+libtiff5 \
+libmysqlclient18 \
+&& rm -rf /var/lib/apt/lists/*
+
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+ENV APACHE_LOG_DIR /var/log/apache2
+ENV APACHE_PID_FILE /var/run/apache2.pid
+ENV APACHE_RUN_DIR /var/run/apache2
+ENV APACHE_LOCK_DIR /var/lock/apache2
+
+RUN mkdir -p $APACHE_RUN_DIR $APACHE_LOCK_DIR $APACHE_LOG_DIR
+
+ADD requirements.txt /requirements.txt
+ADD wheelhouse /data/wheelhouse
+
+RUN . /data/venv/bin/activate \
+&& pip install --no-index --find-links=/data/wheelhouse -r requirements.txt \
+&& rm /requirements.txt
+
+VOLUME /data/git/blender-coders
+VOLUME /data/config
+VOLUME /data/storage
+
+ENV IS_DOCKER True
+ENV USE_X_SENDFILE True
+
+EXPOSE 80
+EXPOSE 5000
+
+ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
+ADD docker-entrypoint.sh /docker-entrypoint.sh
+
+ENTRYPOINT ["bash", "/docker-entrypoint.sh"]
+

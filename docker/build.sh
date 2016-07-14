@@ -1,17 +1,13 @@
 #!/usr/bin/env bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+set -x;
+set -e;
 
-echo $DIR
+cd 1_base/;
+bash build.sh;
 
-if [[ $1 == 'pro' || $1 == 'dev' ]]; then
-	# Copy requirements.txt into pro folder
-	cp ../requirements.txt $1/requirements.txt
-	# Build image
-	docker build -t armadillica/blender_coders_$1 $1
-	# Remove requirements.txt
-	rm $1/requirements.txt
+cd ../2_build/;
+bash build.sh;
 
-else
-	echo "POS. Your options are 'pro' or 'dev'"
-fi
+cd ../3_run/;
+bash build.sh;

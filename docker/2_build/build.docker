@@ -1,0 +1,25 @@
+FROM blender_coders_base
+MAINTAINER Francesco Siddi <francesco@blender.org>
+
+RUN apt-get install -qy \
+git \
+libffi-dev \
+libssl-dev \
+pypy-dev \
+python-dev \
+zlib1g-dev \
+libjpeg-dev \
+libtiff-dev \
+python-crypto \
+python-openssl \
+libmysqlclient-dev
+
+ENV WHEELHOUSE=/data/wheelhouse
+ENV PIP_WHEEL_DIR=/data/wheelhouse
+ENV PIP_FIND_LINKS=/data/wheelhouse
+
+VOLUME /data/wheelhouse
+
+ADD requirements.txt /requirements.txt
+ADD build-wheels.sh /build-wheels.sh
+ENTRYPOINT ["bash", "build-wheels.sh"]
