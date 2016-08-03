@@ -28,8 +28,7 @@ RUN . /data/venv/bin/activate \
 && rm /requirements.txt
 
 VOLUME /data/git/blender-coders
-VOLUME /data/config
-VOLUME /data/storage
+VOLUME /data/letsencrypt/blender-coders
 
 ENV IS_DOCKER True
 ENV USE_X_SENDFILE True
